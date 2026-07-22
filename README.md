@@ -96,7 +96,7 @@ Storage pricing is computed based on elapsed calendar days (ceiling of total hou
 - **Days 6 – 10 (Tier 2)**: RM 20.00 / day
 - **Days 11+ (Tier 3)**: RM 30.00 / day
 
-### 5. Deferred SMS Notification Flow
+### 5. SMS Notification Flow
 
 To reflect real-world hardware flows:
 
@@ -118,11 +118,6 @@ Database schema creation and initial seeding are fully automated via Alembic mig
 - **Seeded Malaysian Stations**: _Mid Valley Megamall Hub_, _Sunway Pyramid Station_, _KL Sentral Station_.
 - **Seeded Slots**: 18 locker slots across Small, Medium, and Large dimensions.
 - **Seeded Engineer Credentials**: Default maintenance engineer (`admin_engineer` / `admin123`).
-
-### 8. Shopee Light Theme & Malaysian Localization
-
-- **Visual Palette**: Shopee Orange (`#EE4D2D`), coral accents, clean light canvas (`#F5F5F7`), and white cards.
-- **Localization**: Ringgit Malaysia (`RM`) currency, Malaysian mobile prefixes (`+60`), and default couriers (_Shopee Xpress SPX_, _Pos Laju_, _J&T Express_, _Ninja Van_).
 
 ---
 
@@ -176,14 +171,14 @@ While the following architectural features are good to have for enterprise produ
 In physical production deployments, hardware sensors and automated operational policies resolve real-world edge cases not covered in this software prototype scope:
 
 - **Premature Door Closure without Parcel Removal**: If a recipient opens the locker door, forgets or leaves their package inside, and accidentally closes the door:
-  - *Current Prototype Behavior*: The system detects door closure (`/api/allocations/retrieve-complete`) and completes the allocation, resetting slot status to `AVAILABLE`.
-  - *Production Solution*: Internal weight/optical break-beam sensors inside the locker cavity verify parcel removal before freeing the slot, accompanied by a 60-second "Re-open Door" grace period button on the kiosk terminal.
+  - _Current Prototype Behavior_: The system detects door closure (`/api/allocations/retrieve-complete`) and completes the allocation, resetting slot status to `AVAILABLE`.
+  - _Production Solution_: Internal weight/optical break-beam sensors inside the locker cavity verify parcel removal before freeing the slot, accompanied by a 60-second "Re-open Door" grace period button on the kiosk terminal.
 - **Overdue / Abandoned Package Auto-Eviction**: If a recipient leaves a package unclaimed for an extended period (e.g. >30 days):
-  - *Current Prototype Behavior*: Tiered storage fees accrue daily without an automatic eviction cap.
-  - *Production Solution*: Scheduled background worker jobs auto-flag allocations as `ABANDONED` after a threshold (e.g. 14 or 30 days) and generate engineer maintenance tickets to clear the slot.
+  - _Current Prototype Behavior_: Tiered storage fees accrue daily without an automatic eviction cap.
+  - _Production Solution_: Scheduled background worker jobs auto-flag allocations as `ABANDONED` after a threshold (e.g. 14 or 30 days) and generate engineer maintenance tickets to clear the slot.
 - **Volumetric Parcel Sizing Mismatch**: If a courier selects a Large slot for a Small package or attempts to force an oversized parcel:
-  - *Current Prototype Behavior*: Allocates based directly on courier form input.
-  - *Production Solution*: 3D optical light-curtains inside each locker frame measure parcel dimensions automatically upon door closure to verify physical package size.
+  - _Current Prototype Behavior_: Allocates based directly on courier form input.
+  - _Production Solution_: 3D optical light-curtains inside each locker frame measure parcel dimensions automatically upon door closure to verify physical package size.
 
 ---
 
